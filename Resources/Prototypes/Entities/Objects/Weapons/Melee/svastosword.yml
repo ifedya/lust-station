@@ -1,0 +1,71 @@
+- type: entity
+  name: svastosword
+  parent: [ BaseSword, BaseMajorContraband ]
+  id: svastosword
+  description: Bankai, kanon biraki
+  components:
+  - type: Tag
+    tags:
+    - Katana
+  - type: Sprite
+    sprite: Objects/Weapons/Melee/svastosword.rsi
+  - type: MeleeWeapon
+    damage:
+      types:
+        Slash: 7
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+  - type: Item
+    storedSprite:
+      state: storage
+      sprite: Objects/Weapons/Melee/katana_storage_64x.rsi #Done in 64x64 because it looks way too puny in 32x32
+    shape:
+    - 0,0,0,3
+  - type: Clothing
+    sprite: Objects/Weapons/Melee/svastosword.rsi
+    slots:
+    - Back
+    - Belt
+  - type: DisarmMalus
+  - type: EmitSoundOnPickup
+    sound:
+      path: /Audio/Weapons/svastosword/svastoswordpickup.ogg
+  - type: EnergySword         # Логика энергетического меча (активация/деактивация)
+  - type: ItemToggle          # Система переключения состояний предмета
+    soundActivate:            # Звуки при активации/деактивации
+      path: /Audio/Weapons/svastosword/svastoswordon.ogg
+    soundDeactivate:
+      path: /Audio/Weapons/svastosword/svastoswordoff.ogg
+    deactivateUnequippedHand: true # Автоматически снимает меч с руки при деактивации
+  - type: ComponentToggler    # Включает/выключает компоненты при активации:
+    components:
+    - type: PointLight          # Подсветка лезвия
+      radius: 5                 # Радиус свечения
+      energy: 10
+      color: "#3d0202"              # Цвет
+    - type: ClothingSpeedModifier
+      walkModifier: 2
+      sprintModifier: 2
+    - type: HeldSpeedModifier
+    - type: DamageOnHolding
+      damage:
+        types:
+          Heat: 2
+    - type: Sharp           # Острое лезвие (позволяет наносить режущий урон)
+    - type: DisarmMalus     # Шанс обезоруживания противника (малус 0.6 = 60%)
+    - type: Execution       # Добивание (занимает 4 секунды)
+      doAfterDuration: 4.0
+  - type: ItemToggleHot       # Горячая клавиша для активации
+  - type: ItemToggleSize      # Изменение размера при активации
+    activatedSize: Huge       # В активированном состоянии размер "Huge"
+  - type: ItemTogglePointLight # Включение подсветки
+  - type: ItemToggleMeleeWeapon # Параметры атаки при активации
+    activatedSoundOnHit:      # Звуки при ударе
+      path: /Audio/Weapons/eblade1.ogg
+    activatedDamage:          # Типы урона в активированном состоянии
+      types:
+        Slash: 15             # Режущий
+        Heat: 15              # Тепловой
+        Structural: 40        # Структурный (для разрушения объектов)
+  - type: UseDelay
+    delay: 120.0
